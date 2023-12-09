@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from helpers.media_upload import upload_pizza_image, upload_burger_image, upload_restaurant
 
@@ -26,6 +27,9 @@ class Pizza(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE,
                                    related_name="pizza")
 
+    def get_absolute_url(self):
+        return reverse("pizza_details", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.pizza_name
 
@@ -42,6 +46,9 @@ class Burger(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE,
                                    related_name="burger")
+
+    def get_absolute_url(self):
+        return reverse("burger_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.burger_name

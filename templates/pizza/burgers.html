@@ -10,14 +10,14 @@
         {% for burger in burgers %}
             <figure class="pizza">
                 <div class="pizza__hero">
-                    <img src="{% if burger.image %}{{ burger.image.url }}{% else %}
+                    <a href="{{ burger.get_absolute_url }}"><img src="{% if burger.image %}{{ burger.image.url }}{% else %}
                 {% static "img/no_image.jpeg" %}
                 {% endif %}"
-                         alt="pizza" class="pizza__img">
+                         alt="pizza" class="pizza__img"></a>
                 </div>
                 <div class="pizza__content">
                     <div class="pizza__title">
-                        <h1 class="pizza__heading">Burger {{ burger.burger_name }}🥩</h1>
+                        <h1 class="pizza__heading"><a href="{{ burger.get_absolute_url }}">Burger {{ burger.burger_name }}</a>🥩</h1>
                         <div class="pizza__tag pizza__tag--1">#meat</div>
                         <div class="pizza__tag pizza__tag--2">#italian</div>
                     </div>

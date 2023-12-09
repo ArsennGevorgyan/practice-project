@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content  %}
+    <div class="container bootdey">
+        <h1>{{ burger.burger_name }}</h1>
+    </div>
+    {% include "layouts/detal.html" with item=burger %}
+    <div class="container bootdey">
+
+{% endblock %}

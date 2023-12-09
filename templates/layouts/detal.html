@@ -1,0 +1,68 @@
+{% load static %}
+<div class="container">
+    <img src="{{ item.restaurant.image.url }}" style="width:65px;"
+         class="w3-circle w3-right w3-margin">
+</div>
+<div class="container bootdey">
+    <div class="col-md-12">
+        <section class="panel">
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div class="pro-img-details">
+                        <img src="{% if item.image %}{{ item.image.url }}{% endif %}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p>
+                        {{ item.description }}
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <h3>calories
+        <button type="reset" class="pro-price">{{ item.calories }}</button>
+    </h3>
+    <h3>rate
+        <button type="reset" class="success">{{ item.rate }}</button>
+    </h3>
+    <h3>price
+        <button type="reset" class="danger">{{ item.price }}</button>
+    </h3>
+    <h3>prepare time
+        <button type="reset" class="blue">{{ item.prepare_time }}</button>
+    </h3>
+    <div class="container">
+        <h1>Similar products</h1>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-image">
+                    <thead>
+                    <tr>
+                         <th scope="col">Row</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Calories</th>
+                        <th scope="col">price</th>
+                        <th scope="col">prepare time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in similar_products %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td class="w-25">
+                                <a href="{{ product.get_absolute_url }}"><img src="{% if product.image %}{{ product.image.url }}
+                                          {% else %}{% static "img/no_image.jpeg" %}{% endif %}"
+                                                class="img-fluid img-thumbnail" alt="Sheep"></a>
+                            </td>
+                            <td>{{ product.calories }}</td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.prepare_time }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
