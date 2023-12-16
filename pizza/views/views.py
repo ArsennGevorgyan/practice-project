@@ -7,7 +7,7 @@ from pizza.models import Pizza, Burger, Restaurant
 
 
 def pizza(request):
-    pizzas = Pizza.objects.all()
+    pizzas = Pizza.objects.all().order_by("-pk")
     paginator = Paginator(pizzas, 2)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -15,7 +15,7 @@ def pizza(request):
 
 
 def burger(request):
-    burgers = Burger.objects.all()
+    burgers = Burger.objects.all().order_by("-pk")
     paginator = Paginator(burgers, 2)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -23,7 +23,7 @@ def burger(request):
 
 
 def all_restaurant(request):
-    restaurants = Restaurant.objects.all().order_by("pk")
+    restaurants = Restaurant.objects.all().prefetch_related("pizza", "burger").order_by("pk")
     paginator = Paginator(restaurants, 6)
     page_number = request.GET.get("page")
     restaurants = paginator.get_page(page_number)

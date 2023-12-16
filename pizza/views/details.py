@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.shortcuts import get_object_or_404, render, redirect
 
 from django.contrib import messages
@@ -62,3 +61,46 @@ def add_burger(request):
             messages.success(request, "Burger added successfully!")
             return redirect("burgers")
     return render(request, "details/add_burger.html", {"form": form})
+
+
+def edit_pizza(request, pk: int):
+    pizza = get_object_or_404(Pizza, pk=pk)
+    form = PizzaForm(instance=pizza)
+    if request.method == "POST":
+        form = PizzaForm(request.POST, request.FILES, instance=pizza)
+        if form.is_valid():
+            pizza_instance = form.save()
+            messages.success(request, f"{pizza_instance.pizza_name} Updated successfully!")
+            return redirect(pizza_instance)
+    return render(request, "details/edit_pizza.html", {"form": form})
+
+
+def edit_burger(request, pk: int):
+    burger = get_object_or_404(Burger, pk=pk)
+    form = BurgerForm(instance=burger)
+    if request.method == "POST":
+        form = BurgerForm(request.POST, request.FILES, instance=burger)
+        if form.is_valid():
+            burger_instance = form.save()
+            messages.success(request, f"{burger_instance.burger_name} Updated successfully!")
+            return redirect(burger_instance)
+    return render(request, "details/edit_burger.html", {"form": form})
+
+
+def delete_pizza(request, pk: int):
+    pizza = get_object_or_404(Pizza, pk=pk)
+    if request.method == "POST":
+        pizza.delete()
+        messages.info(request, "pizza deleted Successfully")
+        return redirect("pizzas")
+    return render(request, "details/delete_pizza.html", {"pizza": pizza})
+
+
+def delete_burger(request, pk: int):
+    burger = get_object_or_404(Burger, pk=pk)
+    if request.method == "POST":
+        burger.delete()
+        messages.info(request, "Burger deleted successfully!")
+        return redirect("burgers")
+    return render(request, "details/delete_burger.html", {"burger": burger})
+

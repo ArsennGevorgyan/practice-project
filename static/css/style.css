@@ -181,3 +181,8 @@ body, html, nav, ul, li, span {
     height: calc(3rem + 2px) !important;
     border-radius:0;
 }
+
+.right-button{
+    	text-align: right;
+        padding: 20px;
+}
