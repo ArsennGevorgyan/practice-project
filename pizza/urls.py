@@ -2,7 +2,8 @@ from django.urls import path
 from pizza.views import pizza, burger, about_us,\
     all_restaurant, restaurant_detail, pizza_detail, burger_detail, \
     advanced_search, add_pizza, add_burger
-from pizza.views.details import edit_pizza, edit_burger, delete_burger, delete_pizza
+from pizza.views.details import edit_pizza, edit_burger,\
+    delete_burger, delete_pizza, add_restaurant
 
 urlpatterns = [
     path("", pizza, name="pizzas"),
@@ -18,5 +19,6 @@ urlpatterns = [
     path("about-us/", about_us, name="about_us"),
     path("restaurants/", all_restaurant, name="restaurants"),
     path("restaurant/<int:pk>/", restaurant_detail, name="res_detail"),
+    path("create-restaurant/", add_restaurant, name="add_restaurant"),
     path("search/", advanced_search, name="search"),
 ]

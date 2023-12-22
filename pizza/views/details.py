@@ -1,9 +1,11 @@
+from django.forms import formset_factory, modelformset_factory
 from django.shortcuts import get_object_or_404, render, redirect
 
 from django.contrib import messages
 
 from helpers.utils import get_similar_products
-from pizza.forms import PizzaForm, BurgerForm
+from pizza.forms import PizzaForm, BurgerForm, RestaurantForm, \
+    restaurant_pizza_inline, restaurant_burger_inline
 from pizza.models import Pizza, Restaurant, Burger
 
 
@@ -104,3 +106,31 @@ def delete_burger(request, pk: int):
         return redirect("burgers")
     return render(request, "details/delete_burger.html", {"burger": burger})
 
+
+def add_restaurant(request):
+    related_data = []
+    restaurant_form = RestaurantForm(request.POST or None, request.FILES or None)
+    restaurant_pizza_formset = restaurant_pizza_inline(request.POST or None, request.FILES or None)
+    restaurant_burger_formset = restaurant_burger_inline(request.POST or None, request.FILES or None)
+    if restaurant_form.is_valid():
+        for form in list(restaurant_pizza_formset) + list(restaurant_burger_formset):
+            if form.is_valid():
+                if form.cleaned_data:
+                    instance = form.save(commit=False)
+                    related_data.append(instance)
+            else:
+                for field, err in form.errors.items():
+                    error_text = ','.join([e for e in err])
+                    messages.error(request, f"{field}! {error_text}")
+                    return redirect("add_restaurant")
+        restaurant = restaurant_form.save()
+        for inst in related_data:
+            inst.restaurant = restaurant
+            inst.save()
+        messages.success(request, f"Your {restaurant.name} Created Successfully")
+        return redirect("pizzas")
+
+    context = {"form": restaurant_form,
+               "restaurant_burger_formset": restaurant_burger_formset,
+               "restaurant_pizza_formset": restaurant_pizza_formset}
+    return render(request, "details/add_restaurant.html", context)

@@ -133,6 +133,13 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+from django.contrib.messages import constants as message_constants
+
+
+MESSAGE_TAGS = {
+    message_constants.ERROR: "danger",
+}
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"

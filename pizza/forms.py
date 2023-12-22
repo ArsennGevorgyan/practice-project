@@ -1,7 +1,9 @@
 from django import forms
+from django.forms import inlineformset_factory
+
 
 from helpers.choices import RATE_CHOICES, PRODUCT_TYPE_CHOICES
-from pizza.models import Pizza, Burger
+from pizza.models import Pizza, Burger, Restaurant
 
 
 class SearchForm(forms.Form):
@@ -50,3 +52,21 @@ class BurgerForm(forms.ModelForm):
         fields = ("burger_name", "description",
                   "rate", "prepare_time", "calories",
                   "price", "image", "restaurant")
+
+
+class RestaurantForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["creation_date"].widget.attrs.update(
+            {"class": "form-control"})
+
+    class Meta:
+        model = Restaurant
+        fields = "__all__"
+
+
+restaurant_pizza_inline = inlineformset_factory(Restaurant, Pizza, extra=2,
+                                                form=PizzaForm, can_delete=False)
+restaurant_burger_inline = inlineformset_factory(Restaurant, Burger, extra=2,
+                                                 form=BurgerForm, can_delete=False)
