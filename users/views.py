@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
 from django.contrib.auth.views import LoginView, LogoutView
-
+from django.contrib.auth.models import Group
 from helpers.mixins import OwnProFileMixin
 from users.forms import UserRegistrationForm, ProfileForm
 
@@ -22,6 +22,9 @@ class UserCreationView(CreateView):
         self.object.profile.image = form.cleaned_data["image"]
         self.object.profile.user_type = form.cleaned_data["user_type"]
         self.object.profile.save()
+        if self.object.profile.user_type == "business":
+            restaurant_group = Group.objects.get(name="product_action")
+            restaurant_group.user_set.add(self.object)
         messages.success(self.request, "User Created Successfully")
         return response
 

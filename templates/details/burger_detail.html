@@ -2,10 +2,12 @@
 
 {% block content  %}
     <div class="container bootdey">
+    {% if editable %}
     <div class="right-button  gap-2 col-6 mx-auto">
         <a href="{% url "edit_burger" burger.pk %}"><button type="button" class="btn btn-primary ">Edit Burger</button></a>
         <a href="{% url "delete_burger" burger.pk %}"><button type="button" class="btn btn-danger">Delete Burger</button></a>
     </div>
+        {% endif %}
         <h1>{{ burger.burger_name }}</h1>
     </div>
     {% include "layouts/detal.html" with item=burger %}
