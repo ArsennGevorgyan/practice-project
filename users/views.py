@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.mail import send_mass_mail
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, UpdateView, ListView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView, FormView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import Group
 from helpers.mixins import OwnProFileMixin
-from users.forms import UserRegistrationForm, ProfileForm
+from users.forms import UserRegistrationForm, ProfileForm, EmailForm
+from django.conf import settings
 
 
 class UserCreationView(CreateView):
@@ -56,3 +58,21 @@ class UserUpdateView(OwnProFileMixin, UpdateView):
         messages.success(self.request, "User updated successfully!")
         return reverse("profile", kwargs={"pk": self.object.pk})
 
+
+class BusinessEmailView(FormView):
+    template_name = "group/business_email.html"
+    form_class = EmailForm
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        subject = form.cleaned_data['subject']
+        body = form.cleaned_data['body']
+        users = User.objects.filter(groups__pk=self.kwargs["group_id"])
+        send_mass_mail(datatuple=[(subject, body,
+                                   settings.EMAIL_HOST_USER,
+                                   [user.email])for user in users])
+        return response
+
+    def get_success_url(self):
+        messages.success(self.request, "Messages send successfully")
+        return reverse("admin:auth_group_changelist")

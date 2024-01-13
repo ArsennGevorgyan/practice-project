@@ -166,7 +166,9 @@ def add_restaurant(request):
                     error_text = ','.join([e for e in err])
                     messages.error(request, f"{field}! {error_text}")
                     return redirect("add_restaurant")
-        restaurant = restaurant_form.save()
+        restaurant = restaurant_form.save(commit=False)
+        restaurant.owner = request.user
+        restaurant.save()
         for inst in related_data:
             inst.restaurant = restaurant
             inst.save()

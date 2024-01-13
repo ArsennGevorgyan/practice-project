@@ -42,3 +42,8 @@ class ProfileForm(forms.ModelForm):
         fields = ("first_name", "last_name",
                   "email", "username", "country",
                   "phone_number", "image")
+
+
+class EmailForm(forms.Form):
+    subject = forms.CharField(max_length=255)
+    body = forms.CharField(widget=forms.Textarea())

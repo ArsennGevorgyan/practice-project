@@ -39,9 +39,10 @@ class SearchForm(forms.Form):
 class PizzaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        owner = kwargs.pop("owner")
+        owner = kwargs.pop("owner") if kwargs.get("owner") else None
         super().__init__(*args, **kwargs)
-        self.fields["restaurant"].queryset = Restaurant.objects.filter(owner=owner)
+        if owner:
+            self.fields["restaurant"].queryset = Restaurant.objects.filter(owner=owner)
 
     class Meta:
         model = Pizza
@@ -53,9 +54,10 @@ class PizzaForm(forms.ModelForm):
 class BurgerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        owner = kwargs.pop("owner")
+        owner = kwargs.pop("owner") if kwargs.get("owner") else None
         super().__init__(*args, **kwargs)
-        self.fields["restaurant"].queryset = Restaurant.objects.filter(owner=owner)
+        if owner:
+            self.fields["restaurant"].queryset = Restaurant.objects.filter(owner=owner)
 
     class Meta:
         model = Burger
@@ -73,7 +75,7 @@ class RestaurantForm(forms.ModelForm):
 
     class Meta:
         model = Restaurant
-        fields = "__all__"
+        exclude = ("owner",)
 
 
 restaurant_pizza_inline = inlineformset_factory(Restaurant, Pizza, extra=2,

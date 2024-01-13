@@ -20,7 +20,7 @@ class Pizza(models.Model):
     description = models.TextField(blank=True, null=True)
     rate = models.FloatField(default=0)
     prepare_time = models.FloatField(null=True, blank=True)
-    calories = models.FloatField(blank=True)
+    calories = models.FloatField(blank=True, null=True)
     price = models.FloatField()
     image = models.ImageField(upload_to=upload_pizza_image, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
