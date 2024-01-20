@@ -18,6 +18,9 @@
                 <div class=" d-flex mt-2">
                     <a href="{% url "edit_profile" object.pk %}"><button class="btn1 btn-dark">Edit Profile</button></a>
                 </div>
+                <div class=" d-flex mt-2">
+                    <a href="{% url "change_password" %}"><button class="btn1 btn-dark">Change Password</button></a>
+                </div>
                 <div class="text mt-3"><span>Country {{ object.profile.country.name }}<br><br> </span>
                 </div>
                 <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center"><span><i

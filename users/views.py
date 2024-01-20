@@ -2,13 +2,16 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.mail import send_mass_mail
+from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, UpdateView, ListView, FormView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView, FormView, TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import Group
 from helpers.mixins import OwnProFileMixin
 from users.forms import UserRegistrationForm, ProfileForm, EmailForm
 from django.conf import settings
+from django.core.mail import EmailMessage
 
 
 class UserCreationView(CreateView):
@@ -76,3 +79,10 @@ class BusinessEmailView(FormView):
     def get_success_url(self):
         messages.success(self.request, "Messages send successfully")
         return reverse("admin:auth_group_changelist")
+
+
+class PasswordChangeDoneView(TemplateView):
+
+    def get(self, request, **kwargs):
+        messages.success(request, "Password changed successfully!")
+        return redirect("pizzas")

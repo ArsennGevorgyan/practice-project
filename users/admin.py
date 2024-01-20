@@ -15,7 +15,7 @@ class GroupAdmin(AdminGroup):
     @staticmethod
     def send_email_to_group(obj):
         return format_html(
-            "<button type=submit style='background-color:#263e4a;'><a href='{}'>Submit</a></button>",
+            "<button type=submit style='background-color:#4aed09;'><a href='{}'>Submit</a></button>",
             reverse("business_email", kwargs={
                 "group_id": obj.pk
             }),
