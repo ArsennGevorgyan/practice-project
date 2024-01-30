@@ -38,6 +38,8 @@ urlpatterns = [
          name="password_reset_confirm"),
     path("password-reset-complete/", auth_views.PasswordResetCompleteView.as_view(),
          name="password_reset_complete"),
+    path("api-auth/", include("rest_framework.urls")),
+    path("api/v1/pizza/", include("pizza.api.urls")),
 ]
 
 if settings.DEBUG:

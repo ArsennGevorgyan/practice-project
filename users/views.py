@@ -28,7 +28,7 @@ class UserCreationView(CreateView):
         self.object.profile.user_type = form.cleaned_data["user_type"]
         self.object.profile.save()
         if self.object.profile.user_type == "business":
-            restaurant_group = Group.objects.get(name="product_action")
+            restaurant_group = Group.objects.get(name="business")
             restaurant_group.user_set.add(self.object)
         messages.success(self.request, "User Created Successfully")
         return response
